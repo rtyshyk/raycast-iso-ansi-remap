@@ -43,3 +43,13 @@ Before publishing:
 - Update to the latest `@raycast/api` and `@raycast/utils`, then run `npm run lint`, `npm run build:dist`, `npm run typecheck` and `npm test`.
 - Add 3–6 screenshots to `metadata/`: PNG, 2000×1250, one background for all, no personal data. Raycast's Window Capture with "Save to Metadata" takes them in that format. The status view is the main one.
 - Add a `CHANGELOG.md` entry: `## [Title] - {PR_MERGE_DATE}`.
+
+## Icon
+
+`assets/icon.png` is rendered from `design/icon.svg` with AppKit:
+
+```sh
+swift design/render.swift design/icon.svg assets/icon.png
+```
+
+`design/` is not bundled into the extension.
