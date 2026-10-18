@@ -1,6 +1,17 @@
-import { Action, ActionPanel, Color, Detail, Icon, Keyboard, showToast, Toast } from "@raycast/api";
+import {
+  Action,
+  ActionPanel,
+  Color,
+  Detail,
+  Icon,
+  Keyboard,
+  openExtensionPreferences,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import { showFailureToast, usePromise } from "@raycast/utils";
-import { getStatus, keyremap, KeyremapAction, RemapStatus, scriptPath } from "./lib/keyremap";
+import { getStatus, RemapStatus, scriptPath } from "./lib/keyremap";
+import { disableRemap, enableRemap } from "./lib/run-action";
 
 const REMAP_LABEL: Record<RemapStatus["remap"], { text: string; color: Color }> = {
   on: { text: "On", color: Color.Green },
@@ -9,9 +20,9 @@ const REMAP_LABEL: Record<RemapStatus["remap"], { text: string; color: Color }> 
 };
 
 const AUTOSTART_LABEL: Record<RemapStatus["autostart"], { text: string; color: Color }> = {
-  on: { text: "Installed", color: Color.Green },
-  off: { text: "Not Installed", color: Color.SecondaryText },
-  "not-loaded": { text: "Installed, Not Loaded", color: Color.Orange },
+  on: { text: "Stays On", color: Color.Green },
+  off: { text: "Off", color: Color.SecondaryText },
+  "not-loaded": { text: "LaunchAgent Not Loaded", color: Color.Orange },
 };
 
 export function statusMarkdown(status: RemapStatus | undefined, script: string) {
@@ -27,10 +38,10 @@ ${state}
 
 Only the built-in keyboard changes. External keyboards and your other remaps (for example Caps Lock) stay as they are.
 
-If something looks wrong, this turns the remap off from Terminal:
+If something looks wrong, this turns the remap off and removes its LaunchAgent, from Terminal:
 
 \`\`\`
-/bin/bash "${script}" off
+/bin/bash "${script}" uninstall
 \`\`\`
 `;
 }
@@ -44,12 +55,11 @@ export default function Command() {
     failureToastOptions: { title: "Could not read the key mapping" },
   });
 
-  async function run(action: KeyremapAction, title: string) {
-    const toast = await showToast({ style: Toast.Style.Animated, title: `${title}…` });
+  async function run(action: () => Promise<string>, pending: string) {
+    const toast = await showToast({ style: Toast.Style.Animated, title: pending });
     try {
-      toast.message = await keyremap(action);
+      toast.title = await action();
       toast.style = Toast.Style.Success;
-      toast.title = title;
     } catch (error) {
       await toast.hide();
       await showFailureToast(error, { title: "Key remap failed" });
@@ -57,23 +67,12 @@ export default function Command() {
     revalidate();
   }
 
-  const remapAction =
-    status?.remap === "on" ? (
-      <Action title="Disable Remap" icon={Icon.XMarkCircle} onAction={() => run("off", "Remap Off")} />
-    ) : (
-      <Action title="Enable Remap" icon={Icon.CheckCircle} onAction={() => run("on", "Remap On")} />
-    );
-  const autostartAction =
-    status?.autostart === "on" ? (
-      <Action
-        title="Remove Autostart"
-        icon={Icon.Trash}
-        style={Action.Style.Destructive}
-        onAction={() => run("uninstall", "Autostart Removed")}
-      />
-    ) : (
-      <Action title="Install Autostart" icon={Icon.Power} onAction={() => run("install", "Autostart Installed")} />
-    );
+  const enable = (
+    <Action title="Enable Remap" icon={Icon.CheckCircle} onAction={() => run(enableRemap, "Turning remap on…")} />
+  );
+  const disable = (
+    <Action title="Disable Remap" icon={Icon.XMarkCircle} onAction={() => run(disableRemap, "Turning remap off…")} />
+  );
 
   return (
     <Detail
@@ -88,7 +87,7 @@ export default function Command() {
                 color={REMAP_LABEL[status.remap].color}
               />
             </Detail.Metadata.TagList>
-            <Detail.Metadata.TagList title="Autostart">
+            <Detail.Metadata.TagList title="After Restart">
               <Detail.Metadata.TagList.Item
                 text={AUTOSTART_LABEL[status.autostart].text}
                 color={AUTOSTART_LABEL[status.autostart].color}
@@ -111,8 +110,9 @@ export default function Command() {
       }
       actions={
         <ActionPanel>
-          {remapAction}
-          {autostartAction}
+          {status?.remap === "on" ? disable : enable}
+          {status?.remap === "on" ? enable : disable}
+          <Action title="Open Extension Preferences" icon={Icon.Gear} onAction={openExtensionPreferences} />
           <Action
             title="Refresh"
             icon={Icon.ArrowClockwise}

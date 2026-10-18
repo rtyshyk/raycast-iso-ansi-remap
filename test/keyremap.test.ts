@@ -32,7 +32,7 @@ describe("statusMarkdown", () => {
   it("shows the state and the Terminal fallback", () => {
     const markdown = statusMarkdown({ remap: "partial", autostart: "off", agent: "", rules: [] }, "/x/keyremap.sh");
     expect(markdown).toContain("**Remap:** partly on");
-    expect(markdown).toContain('/bin/bash "/x/keyremap.sh" off');
+    expect(markdown).toContain('/bin/bash "/x/keyremap.sh" uninstall');
   });
 
   it("shows a loading line before the status arrives", () => {

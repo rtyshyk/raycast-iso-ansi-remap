@@ -22,3 +22,10 @@ export const Detail = Object.assign(component, {
 });
 export const ActionPanel = component;
 export const Action = Object.assign(component, { ShowInFinder: component, Style: { Destructive: "destructive" } });
+
+let preferences: Record<string, unknown> = { keepOnAfterRestart: true };
+export const setPreferences = (values: Record<string, unknown>) => {
+  preferences = { keepOnAfterRestart: true, ...values };
+};
+export const getPreferenceValues = vi.fn(() => preferences);
+export const openExtensionPreferences = vi.fn(async () => {});

@@ -25,7 +25,7 @@
     {
       "name": "show-remap-status",
       "title": "Show Remap Status",
-      "description": "Show whether the remap and its autostart are on, and turn them on or off.",
+      "description": "Show whether the remap is on and whether it comes back after a restart, and turn it on or off.",
       "mode": "view",
       "keywords": [
         "iso",
@@ -36,7 +36,7 @@
     {
       "name": "enable-remap",
       "title": "Enable Remap",
-      "description": "Remap the built-in keyboard now. It lasts until you log out or restart, unless autostart is installed.",
+      "description": "Remap the built-in keyboard now. With Keep On After Restart, also at every login.",
       "mode": "no-view",
       "keywords": [
         "iso",
@@ -48,7 +48,7 @@
     {
       "name": "disable-remap",
       "title": "Disable Remap",
-      "description": "Restore the § key and the key beside the left Shift now. Autostart turns the remap back on at the next login.",
+      "description": "Put the § key and the key beside the left Shift back, now and after a restart.",
       "mode": "no-view",
       "keywords": [
         "iso",
@@ -56,30 +56,17 @@
         "keyboard",
         "off"
       ]
-    },
+    }
+  ],
+  "preferences": [
     {
-      "name": "install-autostart",
-      "title": "Install Autostart",
-      "description": "Turn the remap on at every login with a LaunchAgent, and turn it on now.",
-      "mode": "no-view",
-      "keywords": [
-        "iso",
-        "ansi",
-        "keyboard",
-        "login"
-      ]
-    },
-    {
-      "name": "remove-autostart",
-      "title": "Remove Autostart",
-      "description": "Remove the LaunchAgent and turn the remap off.",
-      "mode": "no-view",
-      "keywords": [
-        "iso",
-        "ansi",
-        "keyboard",
-        "uninstall"
-      ]
+      "name": "keepOnAfterRestart",
+      "title": "Startup",
+      "label": "Keep On After Restart",
+      "description": "Enable Remap also adds a LaunchAgent that turns the remap on at every login. Applies the next time you run Enable Remap.",
+      "type": "checkbox",
+      "default": true,
+      "required": false
     }
   ],
   "dependencies": {
