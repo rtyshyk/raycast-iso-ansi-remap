@@ -1,5 +1,5 @@
-import { runAction } from "./lib/run-action";
+import { enableRemap, runAction } from "./lib/run-action";
 
 export default async function Command() {
-  await runAction("on", "⌨️ Remap On: § is now ` ~, the key beside left ⇧ is Shift");
+  await runAction(enableRemap);
 }

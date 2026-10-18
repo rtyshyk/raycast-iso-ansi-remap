@@ -13,11 +13,13 @@ So ~ is back where US layouts have it, and the left Shift works as one long key.
 
 ## Commands
 
-- **Show Remap Status**: shows whether the remap and its autostart are on, the active rules, and actions to change both. Start here if a key behaves unexpectedly.
-- **Enable Remap**: remaps the keys now. It lasts until you log out or restart.
-- **Disable Remap**: puts the keys back now.
-- **Install Autostart**: turns the remap on now and at every login.
-- **Remove Autostart**: stops it at login and turns it off now.
+- **Enable Remap**: remaps the keys now. With **Keep On After Restart** (on by default), it also stays on after a restart.
+- **Disable Remap**: puts the keys back now, and after a restart.
+- **Show Remap Status**: shows whether the remap is on, whether it comes back after a restart, and the active rules, with actions to change them. Start here if a key behaves unexpectedly.
+
+## Settings
+
+- **Keep On After Restart**: when on, Enable Remap adds a LaunchAgent that turns the remap on at every login. When off, the remap lasts until you log out or restart. A change applies the next time you run Enable Remap.
 
 ## What it changes on your Mac
 
@@ -25,7 +27,7 @@ The remap uses `hidutil`, which is built into macOS. It runs in the keyboard dri
 
 - **Only the built-in keyboard.** The rules go only to the HID device named "Apple Internal Keyboard / Trackpad". External keyboards are not changed.
 - **Your other remaps stay.** macOS keeps one list of key remaps per keyboard. The extension adds or removes only its own two rules, so remaps from System Settings (for example Caps Lock) or other tools are kept.
-- **Autostart** adds `~/Library/LaunchAgents/io.github.rtyshyk.iso-ansi-remap.plist` and a copy of the script in `~/Library/Application Support/iso-ansi-remap/`. The LaunchAgent runs once at login. Remove Autostart deletes both.
+- **Keep On After Restart** adds `~/Library/LaunchAgents/io.github.rtyshyk.iso-ansi-remap.plist` and a copy of the script in `~/Library/Application Support/iso-ansi-remap/`. The LaunchAgent runs once at login. Disable Remap deletes both.
 - **No admin rights or extra permissions** are needed.
 
 The § and ± characters are no longer on a key while the remap is on. On the ABC layout, ⌥6 types §.

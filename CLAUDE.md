@@ -6,7 +6,7 @@ Raycast extension "ISO to ANSI Keyboard Remap": remaps two keys on a MacBook's b
 
 - `assets/keyremap.sh`: all the logic (`on`, `off`, `status`, `install`, `uninstall`). Bash 3.2, absolute tool paths, works without Raycast.
 - `src/lib/keyremap.ts`: runs the script through `/bin/bash` and parses `status` (`key=value` lines).
-- `src/lib/run-action.ts`: shared body of the four no-view commands (HUD on success, failure toast).
+- `src/lib/run-action.ts`: `enableRemap` (`install`, or `uninstall` + `on` when Keep On After Restart is off), `disableRemap` (`uninstall`) and the no-view wrapper (HUD on success, failure toast).
 - `src/show-remap-status.tsx`: the Detail view with state, rules and actions.
 
 ## Checks
@@ -23,6 +23,8 @@ npm run lint && npm run typecheck && npm test && npm run build:dist
 - Claude Code's auto mode refuses to write LaunchAgents; test `install` through the extension or ask the user to run it.
 
 ## Raycast Store
+
+- No separate commands for configuration (Store rule), so autostart is the `keepOnAfterRestart` preference applied by Enable Remap, not its own commands. Raycast can't run code when a preference changes.
 
 Same rules as `../raycast-improve-writing/CLAUDE.md` (author `roman.tyshyk`, MIT, npm lockfile, latest `@raycast/api`, user-facing README, screenshots in `metadata/`, `{PR_MERGE_DATE}` changelog). Closest Store extension is Keyboard Win Mac Switch (swaps ⌥/⌘ for all keyboards); the README leads with the ISO/ANSI problem and the built-in-only targeting.
 
