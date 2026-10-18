@@ -1,0 +1,109 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "iso-ansi-remap",
+  "title": "ISO to ANSI Keyboard Remap",
+  "description": "Turn the § key into ` ~ and the key beside the short left Shift into Shift on a MacBook ISO keyboard.",
+  "icon": "icon.png",
+  "author": "roman.tyshyk",
+  "license": "MIT",
+  "platforms": [
+    "macOS"
+  ],
+  "categories": [
+    "System"
+  ],
+  "keywords": [
+    "keyboard",
+    "iso",
+    "ansi",
+    "hidutil",
+    "remap",
+    "tilde",
+    "shift"
+  ],
+  "commands": [
+    {
+      "name": "show-remap-status",
+      "title": "Show Remap Status",
+      "description": "Show whether the remap and its autostart are on, and turn them on or off.",
+      "mode": "view",
+      "keywords": [
+        "iso",
+        "ansi",
+        "keyboard"
+      ]
+    },
+    {
+      "name": "enable-remap",
+      "title": "Enable Remap",
+      "description": "Remap the built-in keyboard now. It lasts until you log out or restart, unless autostart is installed.",
+      "mode": "no-view",
+      "keywords": [
+        "iso",
+        "ansi",
+        "keyboard",
+        "on"
+      ]
+    },
+    {
+      "name": "disable-remap",
+      "title": "Disable Remap",
+      "description": "Restore the § key and the key beside the left Shift now. Autostart turns the remap back on at the next login.",
+      "mode": "no-view",
+      "keywords": [
+        "iso",
+        "ansi",
+        "keyboard",
+        "off"
+      ]
+    },
+    {
+      "name": "install-autostart",
+      "title": "Install Autostart",
+      "description": "Turn the remap on at every login with a LaunchAgent, and turn it on now.",
+      "mode": "no-view",
+      "keywords": [
+        "iso",
+        "ansi",
+        "keyboard",
+        "login"
+      ]
+    },
+    {
+      "name": "remove-autostart",
+      "title": "Remove Autostart",
+      "description": "Remove the LaunchAgent and turn the remap off.",
+      "mode": "no-view",
+      "keywords": [
+        "iso",
+        "ansi",
+        "keyboard",
+        "uninstall"
+      ]
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^2.8.2",
+    "@raycast/utils": "^2.3.2"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.2.0",
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.6.0",
+    "typescript": "^5.9.0",
+    "vitest": "^5.0.1"
+  },
+  "scripts": {
+    "build": "ray build",
+    "build:dist": "ray build -e dist -o dist -I --exit-on-error",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix && eslint --fix test vitest.config.mts && prettier --write test vitest.config.mts",
+    "lint": "ray lint && eslint test vitest.config.mts && prettier --check test vitest.config.mts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p test",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}

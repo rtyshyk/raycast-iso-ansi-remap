@@ -1,0 +1,9 @@
+#!/bin/bash
+# Stand-in for launchctl: logs each call to $FAKE_LAUNCHCTL_LOG; "loaded" is a marker file next to it.
+log="${FAKE_LAUNCHCTL_LOG:?}"
+echo "$*" >>"$log"
+case "$1" in
+  bootstrap) touch "$log.loaded" ;;
+  bootout) [ -f "$log.loaded" ] && rm "$log.loaded" || exit 3 ;;
+  print) [ -f "$log.loaded" ] ;;
+esac

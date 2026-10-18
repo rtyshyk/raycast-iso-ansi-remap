@@ -1,0 +1,26 @@
+#!/bin/bash
+# Stand-in for hidutil: keeps UserKeyMapping as "src dst" lines in $FAKE_HID_STATE and prints it the way
+# hidutil does for the two services of a built-in keyboard. FAKE_HID_NO_KEYBOARD=1 matches no service.
+state="${FAKE_HID_STATE:?}"
+for arg; do last="$arg"; done
+echo "RegistryID  Key                   Value"
+[ "${FAKE_HID_NO_KEYBOARD:-}" = 1 ] && exit 0
+case " $* " in
+  *" --set "*)
+    echo "$last" | grep -oE '"HIDKeyboardModifierMappingSrc":[0-9]+,"HIDKeyboardModifierMappingDst":[0-9]+' |
+      sed -E 's/.*Src":([0-9]+),.*Dst":([0-9]+)/\1 \2/' >"$state"
+    ;;
+  *" --get "*)
+    for id in 100000c91 100000c9c; do
+      if [ -s "$state" ]; then
+        echo "$id   UserKeyMapping   ("
+        while read -r src dst; do
+          printf '        {\n        HIDKeyboardModifierMappingDst = %s;\n        HIDKeyboardModifierMappingSrc = %s;\n    },\n' "$dst" "$src"
+        done <"$state"
+        echo ")"
+      else
+        echo "$id   UserKeyMapping   (null)"
+      fi
+    done
+    ;;
+esac
