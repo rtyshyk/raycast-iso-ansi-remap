@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="#2b5ce6"/>
+  <rect x="48" y="196" width="176" height="176" rx="40" fill="#1f46b8"/>
+  <rect x="48" y="180" width="176" height="176" rx="40" fill="#8ea8f2"/>
+  <text x="136" y="304" text-anchor="middle" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif" font-size="120" font-weight="700" fill="#2b5ce6">§</text>
+  <path d="M240 268 L 276 268" stroke="#ffffff" stroke-width="22" stroke-linecap="round"/>
+  <path d="M264 244 L 290 268 L 264 292" fill="none" stroke="#ffffff" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="300" y="168" width="176" height="200" rx="40" fill="#163a9c"/>
+  <rect x="300" y="148" width="176" height="200" rx="40" fill="#ffffff"/>
+  <path d="M338 254 C 358 222, 380 222, 392 240 S 426 260, 446 228" fill="none" stroke="#2b5ce6" stroke-width="22" stroke-linecap="round"/>
+</svg>
